@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atelier WÉI · Mobile Preview</title>
+  <style>
+    :root { color-scheme: light; font-family: Arial, Helvetica, sans-serif; background: #ececec; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #ececec; }
+    body { display: grid; place-items: start center; padding: 24px 12px 48px; }
+    .preview-label { margin: 0 0 12px; color: #555; font-size: 12px; letter-spacing: .02em; }
+    /* 393px is the actual web viewport; the shell adds its bezel outside it. */
+    .phone { width: 413px; max-width: 100%; padding: 12px 8px 14px; border: 2px solid #111; border-radius: 38px; background: #111; box-shadow: 0 18px 46px rgba(0,0,0,.22); }
+    .screen { position: relative; overflow: hidden; width: 100%; height: 852px; border-radius: 28px; background: #fff; }
+    .dynamic-island { position: absolute; z-index: 5; top: 8px; left: 50%; width: 112px; height: 28px; transform: translateX(-50%); border-radius: 18px; background: #111; pointer-events: none; }
+    iframe { display: block; width: 100%; height: 100%; border: 0; background: #fff; }
+    @media (max-width: 430px) { body { padding-top: 12px; } .phone { border: 0; border-radius: 0; padding: 0; box-shadow: none; } .screen { height: calc(100dvh - 36px); min-height: 620px; border-radius: 0; } .dynamic-island { top: 7px; } }
+  </style>
+</head>
+<body>
+  <div>
+    <p class="preview-label">393 × 852 iPhone 16 preview · 可直接交互</p>
+    <div class="phone">
+      <div class="screen">
+        <div class="dynamic-island" aria-hidden="true"></div>
+        <iframe src="index.html?device=iphone16" title="Atelier WÉI mobile preview"></iframe>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
