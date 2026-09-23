@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Logo hover animation</title>
+    <style>
+      :root {
+        --ink: #282828;
+        --speed: 1.35s;
+        --ease: cubic-bezier(0.22, 0.8, 0.25, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: 32px;
+        background: #f7f7f5;
+      }
+
+      .logo {
+        width: min(42vw, 360px);
+        min-width: 180px;
+        aspect-ratio: 77.39 / 98.86;
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .logo svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+
+      .ink {
+        fill: var(--ink);
+      }
+
+      /* The upper bar rotates around its left-lower endpoint. */
+      .top-bar {
+        transform-box: fill-box;
+        transform-origin: 0% 100%;
+        transition: transform var(--speed) var(--ease);
+      }
+
+      /* Three inner horizontal strokes move up into their state-4 positions. */
+      .inner-strokes {
+        transition: transform var(--speed) var(--ease);
+      }
+
+      /* Both inner vertical strokes grow upward while their bottom edges stay fixed. */
+      .long-stroke,
+      .short-stroke {
+        transform-box: fill-box;
+        transform-origin: 50% 100%;
+        transition: transform var(--speed) var(--ease);
+      }
+
+      .logo:hover .top-bar,
+      .logo:focus-visible .top-bar {
+        transform: rotate(-16.51deg);
+      }
+
+      .logo:hover .inner-strokes,
+      .logo:focus-visible .inner-strokes {
+        transform: translateY(-3px);
+      }
+
+      .logo:hover .long-stroke,
+      .logo:focus-visible .long-stroke {
+        /* 71.56 -> 78.61 units: the bottom remains at y=89.94. */
+        transform: scaleY(1.0985);
+      }
+
+      .logo:hover .short-stroke,
+      .logo:focus-visible .short-stroke {
+        /* The short stroke keeps its height and shifts 3 units upward. */
+        transform: translateY(-3px);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .top-bar,
+        .inner-strokes,
+        .long-stroke,
+        .short-stroke {
+          transition-duration: 0.01ms;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logo" role="img" aria-label="Logo，悬停查看动效" tabindex="0">
+      <svg viewBox="0 0 77.39 98.86" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Original 1.svg drawing elements and transformed rect attributes are retained. -->
+        <defs>
+          <style>.cls-1{fill:#282828;}.cls-2{fill:none;}</style>
+        </defs>
+        <title>1</title>
+        <rect class="cls-1 inner-strokes" x="13.07" y="32.75" width="51.87" height="6.61" />
+        <rect class="cls-1 inner-strokes" x="13.07" y="48.44" width="51.87" height="6.61" />
+        <rect class="cls-1 inner-strokes" x="13.07" y="64.13" width="51.87" height="6.61" />
+        <g class="long-stroke">
+          <rect class="cls-1" x="52.5" y="235.48" width="71.56" height="6.61" transform="translate(277.57 -34.12) rotate(90)" />
+        </g>
+        <g class="short-stroke">
+          <rect class="cls-1" x="101" y="256.57" width="20.43" height="6.42" transform="translate(321.51 -36.05) rotate(90)" />
+        </g>
+        <polygon
+          class="cls-1"
+          points="69.86 87.25 7.54 87.25 7.54 22.88 0 22.88 0 98.86 7.54 98.86 7.54 94.3 69.86 94.3 69.86 98.86 77.39 98.86 77.39 21.41 69.87 21.42 69.86 87.25"
+        />
+        <rect class="cls-1 top-bar" x="7.17" y="15.35" width="54.98" height="8.41" />
+        <rect class="cls-2" width="77.39" height="98.76" />
+      </svg>
+    </div>
+  </body>
+</html>
