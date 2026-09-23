@@ -1,0 +1,105 @@
+:root {
+  --grid: 75px;
+  --first-complete-row: 37.5px;
+  --ink: #242424;
+  --line: rgba(0, 0, 0, .12);
+  --copy-scale: 1;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; min-width: 0; }
+/* Keep the visual coordinate system centered on the full device viewport;
+   the page remains scrollable while the scrollbar itself does not steal a
+   column from the centered logo/grid anchor. */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { width: 0; height: 0; }
+html { overflow-x: clip; background: #fff; }
+body { color: var(--ink); background: #fff; font-family: Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+button { font: inherit; }
+img { display: block; max-width: 100%; }
+.page { position: relative; min-height: 100dvh; padding-bottom: 0; isolation: isolate; overflow-x: clip; }
+
+.grid-layer {
+  position: absolute; z-index: -1; top: 0; left: 0; width: 100%; min-height: 100%; pointer-events: none;
+  /* Horizontal lines begin 37.5px below the page top and repeat every 75px.
+     Vertical lines are drawn by the two explicit half-plane layers below so
+     the center always remains a complete, line-free 75px square. */
+  background-image: linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 100% var(--grid);
+  background-position: 0 37.5px;
+  background-repeat: repeat-y;
+  transform-origin: top left;
+}
+.grid-layer::before,
+.grid-layer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(50% - 37.5px);
+  background-size: 75px 100%;
+  background-repeat: repeat-x;
+}
+/* The right edge of the left half is exactly center - 37.5px. */
+.grid-layer::before {
+  left: 0;
+  background-image: repeating-linear-gradient(to left, var(--line) 0 1px, transparent 1px 75px);
+  background-position: right top;
+}
+/* The left edge of the right half is exactly center + 37.5px. */
+.grid-layer::after {
+  right: 0;
+  background-image: repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 75px);
+  background-position: left top;
+}
+
+.brand-layer { position: absolute; z-index: 1; top: 0; left: 0; width: 100%; height: 150px; pointer-events: none; transform-origin: top left; }
+.reference-cell { position: absolute; z-index: 1; top: var(--first-complete-row); left: 50%; width: var(--grid); height: var(--grid); transform: translateX(-50%); pointer-events: none; }
+.reference-cell svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.reference-cell path { fill: none; stroke: rgba(0,0,0,.22); stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+.brand-content { position: absolute; top: calc(3px + var(--first-complete-row)); left: 50%; display: flex; width: max-content; align-items: center; flex-direction: column; transform: translateX(-50%); pointer-events: none; }
+.brand-logo { display: block; width: 53.23px; height: 68px; color: var(--ink); flex: none; pointer-events: auto; cursor: pointer; outline: none; overflow: visible; }
+.brand-line { position: relative; display: inline-block; margin: 20px 0 0; padding: calc(3px * var(--copy-scale)) calc(4px * var(--copy-scale)); color: #fff; background: var(--ink); font-size: calc(16px * var(--copy-scale)); line-height: 1.25; letter-spacing: .01em; white-space: nowrap; cursor: move; pointer-events: auto; touch-action: none; user-select: none; }
+
+.brand-logo .top-bar { transform-box: fill-box; transform-origin: 0% 100%; transition: transform 1.35s cubic-bezier(.22,.8,.25,1); }
+.brand-logo .inner-strokes { transition: transform 1.35s cubic-bezier(.22,.8,.25,1); }
+.brand-logo .long-stroke, .brand-logo .short-stroke { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 1.35s cubic-bezier(.22,.8,.25,1); }
+.brand-logo:hover .top-bar, .brand-logo:focus-visible .top-bar { transform: rotate(-16.51deg); }
+.brand-logo:hover .inner-strokes, .brand-logo:focus-visible .inner-strokes { transform: translateY(-3px); }
+.brand-logo:hover .long-stroke, .brand-logo:focus-visible .long-stroke { transform: scaleY(1.0985); }
+.brand-logo:hover .short-stroke, .brand-logo:focus-visible .short-stroke { transform: translateY(-3px); }
+
+.gallery { position: relative; z-index: 1; width: 100%; min-height: 360px; overflow: visible; transform-origin: 50% 75px; pointer-events: none; }
+.gallery-item { position: absolute; display: flex; flex-direction: column; align-items: flex-start; margin: 0; padding: 0; cursor: move; touch-action: none; user-select: none; will-change: left, top; pointer-events: auto; }
+.gallery-item.dragging { cursor: grabbing; z-index: 9999 !important; }
+.gallery-item button { display: block; width: 100%; margin: 0; padding: 0; border: 0; background: transparent; cursor: inherit; }
+.gallery-item img { width: 100%; height: auto; background: transparent; pointer-events: none; }
+.image-coordinate { position: relative; order: 0; left: auto; bottom: auto; z-index: 2; max-width: calc(100vw - 32px); padding: 3px 5px; color: #fff; background: var(--ink); font-size: 12px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+.gallery-item button { order: 1; }
+.image-coordinate[hidden] { display: none; }
+
+.site-footer { position: absolute; z-index: 1; left: 0; top: 300px; width: 100%; margin: 0 auto; padding: 24px 24px 150px; text-align: center; font-size: calc(16px * var(--copy-scale)); line-height: 1.55; }
+.site-footer p { max-width: 720px; margin: 0 auto 18px; }
+.site-footer a { display: inline-block; padding: calc(3px * var(--copy-scale)) calc(4px * var(--copy-scale)); color: #fff; background: var(--ink); text-decoration: none; }
+
+.viewer { width: min(92vw, 1400px); max-width: none; padding: 24px 72px; border: 0; color: #fff; background: rgba(20,20,20,.96); }
+.viewer::backdrop { background: rgba(0,0,0,.72); }
+.viewer figure { margin: 0; text-align: center; }
+.viewer img { max-width: 100%; max-height: 78vh; margin: auto; object-fit: contain; }
+.viewer figcaption { margin-top: 10px; font-size: 14px; }
+.viewer button { position: absolute; border: 0; color: #fff; background: transparent; cursor: pointer; font-size: 28px; line-height: 1; }
+.viewer-close { top: 14px; right: 18px; }
+.viewer-prev { top: 50%; left: 18px; transform: translateY(-50%); }
+.viewer-next { top: 50%; right: 18px; transform: translateY(-50%); }
+
+@media (max-width: 700px) {
+  .brand-line { margin-top: 18px; }
+  .image-coordinate { font-size: 10px; }
+  .site-footer { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  .viewer { width: 100vw; padding: 48px 42px 24px; }
+}
+@media (max-width: 719.98px) {
+  .image-coordinate { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-logo .top-bar, .brand-logo .inner-strokes, .brand-logo .long-stroke, .brand-logo .short-stroke { transition-duration: .01ms; }
+}
